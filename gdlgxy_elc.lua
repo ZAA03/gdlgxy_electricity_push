@@ -72,7 +72,7 @@ local a = {}
 	a["token"] = pushToken
 	a["title"] = title
 	a["content"] = content
-	--a["topic"] = room
+	a["topic"] = room
 	a["template"] = "markdown"
 local pushjson = json.encode(a)
 --print(pushjson)
