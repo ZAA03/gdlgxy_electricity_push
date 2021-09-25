@@ -1,6 +1,5 @@
 --Github Action 定时推送电量情况
 --gdlgxy
---需要库
 local json = require "dkjson"
 local http = require "socket.http"
 local process = require "environ.process"
@@ -8,9 +7,8 @@ local process = require "environ.process"
 local room = process.getenv("room")
 local url1 = process.getenv('url1')
 local pushToken = process.getenv('token')
-
-
 local date=os.date("%m月%d日")
+
 function all(method,URL,request_body)
   local response_body = {}
   local res, code, response_headers = http.request
@@ -19,16 +17,16 @@ function all(method,URL,request_body)
       method = method,
       headers =
         {
-            ["Content-Type"] = "application/json; charset=UTF-8";
-			["Content-Length"] = #request_body;
+		["Content-Type"] = "application/json; charset=UTF-8";
+		["Content-Length"] = #request_body;
         },
-		source = ltn12.source.string(request_body),
-        sink = ltn12.sink.table(response_body),
+	source = ltn12.source.string(request_body),
+	sink = ltn12.sink.table(response_body),
    }
   if type(response_body) == "table" then
-    backa = table.concat(response_body)   --返回值backa
+	backa = table.concat(response_body)   --返回值backa
 	return backa
-	end
+   end
 end
 all("GET",url1..room,"")
 local aa = backa   --print(aa)
@@ -58,12 +56,10 @@ myfile:write("  \n >消息推送时间："..date)
 myfile:write("  \n点击[查询电费使用情况]("..url1..room..")")
 myfile:seek("set")
 local sy = ""   local cb = ""
-for i in myfile:lines() do
-	if string.match(i,"剩余") then
-	sy = i
-	elseif string.match(i,"抄表") then
-	cb = i
-	end
+  for i in myfile:lines() do
+	if string.match(i,"剩余") then sy = i
+	elseif string.match(i,"抄表") then cb = i
+  end
 end
 local title = date.."："..sy.." |"..cb  --print(title)
 myfile:seek("set")
@@ -78,4 +74,3 @@ local pushjson = json.encode(a)
 --print(pushjson)
 all("POST","http://www.pushplus.plus/send",pushjson)
 print(backa)
-
