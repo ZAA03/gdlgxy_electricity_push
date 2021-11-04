@@ -61,7 +61,7 @@ local sy = ""   local cb = ""
 	elseif string.match(i,"抄表") then cb = i
   end
 end
-local title = date.."："..sy.." |"..cb  --print(title)
+local title = date.."："..sy
 myfile:seek("set")
 local content = myfile:read("*a");
 local a = {}
